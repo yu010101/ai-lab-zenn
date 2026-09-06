@@ -3,7 +3,7 @@ title: "Claude Code・GitHub Copilot・Cursor徹底比較｜AIコーディング
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "claude", "github", "cursor", "mcp"]
-published: true
+published: false
 ---
 
 ## はじめに

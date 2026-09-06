@@ -3,7 +3,7 @@ title: "【2026年8月版】Claude Code・Copilot・Cursor・Windsurf・Codeium�
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "claude", "github", "cursor", "mcp"]
-published: true
+published: false
 ---
 
 ## はじめに

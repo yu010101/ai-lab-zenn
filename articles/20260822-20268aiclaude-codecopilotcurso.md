@@ -3,7 +3,7 @@ title: "【2026年8月版】AIコーディングエージェント徹底比較�
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "claude", "github", "cursor", "development"]
-published: true
+published: false
 ---
 
 ## はじめに：AIコーディングツールは「アーキテクチャ」で選ぶ時代へ

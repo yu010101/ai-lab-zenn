@@ -3,7 +3,7 @@ title: "Claude Code徹底比較&実践Tips13選 SES1年目〜フリーランス�
 emoji: "🤖"
 type: "tech"
 topics: ["claude", "ai", "freelance", "ses", "development"]
-published: true
+published: false
 ---
 
 「Claude Codeって結局何ができるの？」「Copilotと何が違うの？」「Cursorの方が楽じゃない？」——客先常駐で開発しながら、業務外でAIコーディングツールを触り倒してきた身として、この手の質問は本当によく聞かれる。

@@ -3,7 +3,7 @@ title: "SES単価が上がらない人へ。データ分析をClaude Codeで武�
 emoji: "🤖"
 type: "tech"
 topics: ["data", "ses", "claude", "ai"]
-published: true
+published: false
 ---
 
 ## SESの「単価つらい問題」は、情報の非対称性が9割

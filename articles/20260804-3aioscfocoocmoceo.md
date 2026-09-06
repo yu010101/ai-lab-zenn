@@ -3,7 +3,7 @@ title: "3人会社でAI経営OS(CFO/COO/CMO/CEO)を作った話｜構築ログ�
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "claude", "freelance", "data", "ses"]
-published: true
+published: false
 ---
 
 ## はじめに：月商250万円、社員3人の会社が抱えていた「経営の穴」

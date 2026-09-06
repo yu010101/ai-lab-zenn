@@ -3,7 +3,7 @@ title: "【2026年版】Claude Code・Copilot・Cursor・Windsurfのアーキテ
 emoji: "🤖"
 type: "tech"
 topics: ["claude", "github", "cursor", "ai", "mcp"]
-published: true
+published: false
 ---
 
 ## 導入：機能比較だけでは選べない時代に

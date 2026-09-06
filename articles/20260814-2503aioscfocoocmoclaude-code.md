@@ -3,7 +3,7 @@ title: "月商250万円、社員3人でAI経営OSを作った話｜CFO/COO/CMO�
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "claude", "data", "ses", "agent"]
-published: true
+published: false
 ---
 
 ## はじめに:3人の会社に「経営会議」を作る余裕がなかった

@@ -3,7 +3,7 @@ title: "【2026年8月版】Claude Code・GitHub Copilot・Cursor・Windsurf・C
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "claude", "github", "cursor", "mcp"]
-published: true
+published: false
 ---
 
 「Copilotだけで十分？」「Cursorに乗り換えるべき？」「Claude Codeって結局何が違うの？」——AIコーディングツールが乱立する中、こうした疑問を持つエンジニアは多いはずです。2026年8月現在、主要なAIコーディングツールは機能面でも内部アーキテクチャの面でも急速に進化を続けており、半年前の情報がすでに古くなっているケースも珍しくありません。
