@@ -19,6 +19,7 @@ STATE_PATH = os.path.join(ROOT, ".published-notified.json")
 UA = "Mozilla/5.0 (compatible; publish-watch/1.0)"
 ZENN_USER = os.environ.get("ZENN_USER", "ailmarketing")
 QIITA_USER = os.environ.get("QIITA_USER", "sescore")
+NOTE_USER = os.environ.get("NOTE_USER", "sescore")
 
 
 def get_json(url):
@@ -75,6 +76,27 @@ def fetch_qiita():
     return out
 
 
+def fetch_note():
+    """note も公開APIで取れる(認証不要)。ページングして全件見る。"""
+    out, page = [], 1
+    while page <= 25:
+        d = get_json(f"https://note.com/api/v2/creators/{NOTE_USER}/contents?kind=note&page={page}")["data"]
+        for a in d.get("contents", []):
+            out.append({
+                "id": str(a.get("id") or a.get("key")),
+                "kind": "note",
+                "title": a.get("name") or "",
+                "url": f"https://note.com/{NOTE_USER}/n/{a.get('key')}",
+                "metric": f"スキ {a.get('likeCount', 0)}",
+                "note": "",
+                "at": (a.get("publishAt") or "")[:16].replace("T", " "),
+            })
+        if d.get("isLastPage"):
+            break
+        page += 1
+    return out
+
+
 def message(a):
     lines = [f"[info][title]{a['kind']} を公開しました[/title]", a["title"], a["url"],
              f"実績: {a['metric']}"]
@@ -107,7 +129,7 @@ def main():
         state = json.load(f)
 
     failed = 0
-    for name, fetch in (("zenn", fetch_zenn), ("qiita", fetch_qiita)):
+    for name, fetch in (("zenn", fetch_zenn), ("qiita", fetch_qiita), ("note", fetch_note)):
         try:
             items = fetch()
         except (urllib.error.HTTPError, urllib.error.URLError, OSError) as e:
