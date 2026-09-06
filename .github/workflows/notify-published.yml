@@ -28,12 +28,12 @@ jobs:
 
       - name: 通知済みリストを保存
         run: |
-          if git diff --quiet -- .zenn-notified.json; then
+          if git diff --quiet -- .published-notified.json; then
             echo "変更なし"; exit 0
           fi
           git config user.name  "zenn-publish-watch"
           git config user.email "bot@users.noreply.github.com"
-          git add .zenn-notified.json
+          git add .published-notified.json
           git commit -m "通知済みリストを更新"
           # 記事botが並行して push するのでリベースしてから送る
           for i in 1 2 3; do

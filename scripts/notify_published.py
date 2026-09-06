@@ -1,72 +1,99 @@
 #!/usr/bin/env python3
-"""Zennで実際に公開された記事だけをChatworkへ通知する。
+"""実際に公開された記事だけを Chatwork「公開報告」部屋(447062678)へ報告する。
 
-なぜ必要か: 記事パイプラインは `git push` が成功した時点で success:true と
-URL を返すが、Zenn の公開は先入れ先出しで 2.6日に1本しか進まない。
-push 直後の URL は 404 で、そのまま通知すると存在しないURLを配ることになる。
-だからこのスクリプトは push を見ない。**Zenn API に slug が現れたか**だけを見る。
+なぜ push を見ないか: 記事パイプラインは `git push` が成功した時点で success:true と
+URL を返すが、Zenn の公開は先入れ先出しで実測 2.6日に1本しか進まない。
+push 直後の URL は 404 なので、それを通知すると存在しないURLを配ることになる。
+(実測 2026-09-06: slug 20260727 の記事が同日 08:19 に公開 = 41日遅れ)
+Qiita は即時公開なので同じ仕組みでも遅延なく出る。
 
-状態は .zenn-notified.json (通知済み slug の集合)。
-通知に失敗した slug は状態に入れない = 次回リトライされる。握り潰さないこと。
+報告の体裁は macmini の ~/youtube-ai-pipeline/tools/report_public.py に合わせている。
+公開報告は1部屋に集約する方針(2026-09-05 指示)なので、書式を混ぜない。
+
+状態: .published-notified.json。通知に成功した id だけ記録する = 失敗分は次回リトライ。
 """
 import json, os, sys, urllib.parse, urllib.request, urllib.error
 
-USER = os.environ.get("ZENN_USER", "ailmarketing")
-STATE_PATH = os.path.join(os.path.dirname(__file__), "..", ".zenn-notified.json")
-UA = "Mozilla/5.0 (compatible; zenn-publish-watch/1.0)"
+ROOT = os.path.join(os.path.dirname(__file__), "..")
+STATE_PATH = os.path.join(ROOT, ".published-notified.json")
+UA = "Mozilla/5.0 (compatible; publish-watch/1.0)"
+ZENN_USER = os.environ.get("ZENN_USER", "ailmarketing")
+QIITA_USER = os.environ.get("QIITA_USER", "sescore")
 
 
-def fetch_articles():
-    url = f"https://zenn.dev/api/articles?username={USER}&count=100"
+def get_json(url):
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     with urllib.request.urlopen(req, timeout=30) as r:
         if r.status != 200:
-            raise SystemExit(f"Zenn API HTTP {r.status}")
-        return json.load(r)["articles"]
+            raise SystemExit(f"{url} → HTTP {r.status}")
+        return json.load(r)
 
 
-def topics_of(slug):
+def zenn_topics(slug):
     """topics は一覧APIに無いので、同期元のリポジトリから読む。"""
-    path = os.path.join(os.path.dirname(__file__), "..", "articles", f"{slug}.md")
     try:
-        with open(path, encoding="utf-8") as f:
+        with open(os.path.join(ROOT, "articles", f"{slug}.md"), encoding="utf-8") as f:
             for line in f:
                 if line.startswith("topics:"):
-                    return ", ".join(
-                        t for t in line.split("[", 1)[-1].rstrip("]\n ").replace('"', "").split(", ") if t
-                    )
+                    raw = line.split("[", 1)[-1].rstrip("]\n ").replace('"', "")
+                    return ", ".join(t for t in raw.split(", ") if t)
     except OSError:
         pass
     return ""
 
 
-def post_chatwork(body):
-    token = os.environ.get("CHATWORK_API_TOKEN")
-    room = os.environ.get("CHATWORK_ROOM_ID")
-    if not token or not room:
-        # 未設定を成功に丸めない。設定漏れは失敗として出す。
-        raise SystemExit("CHATWORK_API_TOKEN / CHATWORK_ROOM_ID が未設定")
-    data = urllib.parse.urlencode({"body": body}).encode()
-    req = urllib.request.Request(
-        f"https://api.chatwork.com/v2/rooms/{room}/messages",
-        data=data,
-        headers={"X-ChatWorkToken": token,
-                 "Content-Type": "application/x-www-form-urlencoded"},
-    )
-    with urllib.request.urlopen(req, timeout=20) as r:
-        return r.status
+def fetch_zenn():
+    out = []
+    for a in get_json(f"https://zenn.dev/api/articles?username={ZENN_USER}&count=100")["articles"]:
+        out.append({
+            "id": a["slug"],
+            "kind": "Zenn",
+            "title": a["title"],
+            "url": f"https://zenn.dev{a['path']}",
+            "metric": f"{a['body_letters_count']:,}字 / {a['article_type']}",
+            "note": f"topics: {zenn_topics(a['slug'])}" if zenn_topics(a["slug"]) else "",
+            "at": a["published_at"][:16].replace("T", " "),
+        })
+    return out
+
+
+def fetch_qiita():
+    out = []
+    for a in get_json(f"https://qiita.com/api/v2/users/{QIITA_USER}/items?per_page=100"):
+        if a.get("private"):
+            continue
+        tags = ", ".join(t["name"] for t in a.get("tags", []))
+        out.append({
+            "id": a["id"],
+            "kind": "Qiita",
+            "title": a["title"],
+            "url": a["url"],
+            "metric": f"LGTM {a.get('likes_count', 0)} / ストック {a.get('stocks_count', 0)}",
+            "note": f"tags: {tags}" if tags else "",
+            "at": a["created_at"][:16].replace("T", " "),
+        })
+    return out
 
 
 def message(a):
-    """報告の体裁は macmini の tools/report_public.py に合わせる。
-    公開報告は1部屋(447062678)に集約する方針なので、書式が混ざらないようにする。"""
-    topics = topics_of(a["slug"])
-    lines = ["[info][title]Zenn を公開しました[/title]", a["title"], f"https://zenn.dev{a['path']}"]
-    lines.append(f"実績: {a['body_letters_count']:,}字 / {a['article_type']}")
-    if topics:
-        lines += ["", f"topics: {topics}"]
-    lines += ["", f"公開 {a['published_at'][:16].replace('T', ' ')}", "[/info]"]
+    lines = [f"[info][title]{a['kind']} を公開しました[/title]", a["title"], a["url"],
+             f"実績: {a['metric']}"]
+    if a["note"]:
+        lines += ["", a["note"]]
+    lines += ["", f"公開 {a['at']}", "[/info]"]
     return "\n".join(lines)
+
+
+def post_chatwork(body):
+    token = os.environ["CHATWORK_API_TOKEN"]
+    room = os.environ["CHATWORK_ROOM_ID"]
+    data = urllib.parse.urlencode({"body": body}).encode()
+    req = urllib.request.Request(
+        f"https://api.chatwork.com/v2/rooms/{room}/messages", data=data,
+        headers={"X-ChatWorkToken": token,
+                 "Content-Type": "application/x-www-form-urlencoded"})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        return r.status
 
 
 def main():
@@ -75,36 +102,38 @@ def main():
     if not dry and not (os.environ.get("CHATWORK_API_TOKEN") and os.environ.get("CHATWORK_ROOM_ID")):
         print("CHATWORK_API_TOKEN / CHATWORK_ROOM_ID が未設定", file=sys.stderr)
         return 2
-    articles = fetch_articles()
+
     with open(STATE_PATH, encoding="utf-8") as f:
-        notified = set(json.load(f)["notified"])
-
-    new = [a for a in articles if a["slug"] not in notified]
-    new.sort(key=lambda a: a["published_at"])
-    print(f"Zenn公開 {len(articles)}本 / 通知済み {len(notified)}本 / 新規 {len(new)}本")
-
-    if not new:
-        return 0
+        state = json.load(f)
 
     failed = 0
-    for a in new:
-        body = message(a)
-        if dry:
-            print("--- DRY RUN ---\n" + body)
-            continue
+    for name, fetch in (("zenn", fetch_zenn), ("qiita", fetch_qiita)):
         try:
-            code = post_chatwork(body)
-            print(f"送信 OK ({code}): {a['slug']}")
-            notified.add(a["slug"])          # 成功した分だけ記録する
+            items = fetch()
         except (urllib.error.HTTPError, urllib.error.URLError, OSError) as e:
-            print(f"送信 FAIL: {a['slug']}: {e}", file=sys.stderr)
-            failed += 1                       # 記録しない = 次回リトライ
+            print(f"{name}: 取得FAIL: {e}", file=sys.stderr)
+            failed += 1               # 取得失敗を「0件」と数えない
+            continue
+        done = set(state.get(name, []))
+        new = sorted((i for i in items if i["id"] not in done), key=lambda x: x["at"])
+        print(f"{name}: 公開{len(items)}本 / 通知済み{len(done)}本 / 新規{len(new)}本")
+        for a in new:
+            if dry:
+                print("--- DRY RUN ---\n" + message(a))
+                continue
+            try:
+                code = post_chatwork(message(a))
+                print(f"  送信 OK ({code}): {a['id']}")
+                done.add(a["id"])      # 成功した分だけ記録する
+            except (urllib.error.HTTPError, urllib.error.URLError, OSError) as e:
+                print(f"  送信 FAIL: {a['id']}: {e}", file=sys.stderr)
+                failed += 1            # 記録しない = 次回リトライ
+        state[name] = sorted(done)
 
     if not dry:
         with open(STATE_PATH, "w", encoding="utf-8") as f:
-            json.dump({"notified": sorted(notified)}, f, ensure_ascii=False, indent=1)
+            json.dump(state, f, ensure_ascii=False, indent=1)
             f.write("\n")
-
     return 1 if failed else 0
 
 
