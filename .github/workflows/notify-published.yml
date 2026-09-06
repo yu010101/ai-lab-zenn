@@ -1,0 +1,43 @@
+name: Zenn公開をChatworkへ通知
+
+# push ではなく「Zenn API に記事が現れたか」で判定する。
+# Zenn の公開は先入れ先出しで 2.6日に1本しか進まず、push 直後の URL は 404 のため。
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: notify-published
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 新しく公開された記事を通知
+        env:
+          CHATWORK_API_TOKEN: ${{ secrets.CHATWORK_API_TOKEN }}
+          CHATWORK_ROOM_ID: ${{ secrets.CHATWORK_ROOM_ID }}
+        run: python3 scripts/notify_published.py
+
+      - name: 通知済みリストを保存
+        run: |
+          if git diff --quiet -- .zenn-notified.json; then
+            echo "変更なし"; exit 0
+          fi
+          git config user.name  "zenn-publish-watch"
+          git config user.email "bot@users.noreply.github.com"
+          git add .zenn-notified.json
+          git commit -m "通知済みリストを更新"
+          # 記事botが並行して push するのでリベースしてから送る
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && exit 0
+            echo "retry $i"; sleep 5
+          done
+          exit 1
