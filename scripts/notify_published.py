@@ -58,14 +58,15 @@ def post_chatwork(body):
 
 
 def message(a):
-    return "\n".join([
-        "[info][title]Zennで公開されました[/title]",
-        a["title"],
-        f"https://zenn.dev{a['path']}",
-        f"公開 {a['published_at'][:16].replace('T', ' ')}  /  {a['body_letters_count']:,}字  /  {a['article_type']}",
-        f"topics: {topics_of(a['slug'])}" if topics_of(a["slug"]) else "",
-        "[/info]",
-    ])
+    """報告の体裁は macmini の tools/report_public.py に合わせる。
+    公開報告は1部屋(447062678)に集約する方針なので、書式が混ざらないようにする。"""
+    topics = topics_of(a["slug"])
+    lines = ["[info][title]Zenn を公開しました[/title]", a["title"], f"https://zenn.dev{a['path']}"]
+    lines.append(f"実績: {a['body_letters_count']:,}字 / {a['article_type']}")
+    if topics:
+        lines += ["", f"topics: {topics}"]
+    lines += ["", f"公開 {a['published_at'][:16].replace('T', ' ')}", "[/info]"]
+    return "\n".join(lines)
 
 
 def main():
