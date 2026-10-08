@@ -231,17 +231,7 @@ GitHub中心のワークフローであれば、まずCopilot Businessでチー�
 
 ---
 
-Qiitaでコード付き解説も公開しています: https://qiita.com/sescore/items/0ecc8dded92646448bd6
+この記事は、フリーランス向け案件サイト「FreelanceDB」（合同会社Radineer）の運営者が書きました。
+コンサル・PMO領域の非公開案件を扱っており、希望条件を登録いただいた方に個別にご連絡しています。
 
----
-
-## 💼 フリーランスエンジニアの案件をお探しですか？
-
-**SES解体新書 フリーランスDB**では、高単価案件を多数掲載中です。
-
-- ✅ マージン率公開で透明な取引
-- ✅ AI/クラウド/Web系の厳選案件
-- ✅ 専任コーディネーターが単価交渉をサポート
-
-▶ **[無料でエンジニア登録する](https://radineer.asia/freelance/register?utm_source=zenn&utm_medium=article&utm_campaign=claude-code%E3%83%BBgithub-copilot%E3%83%BBcursor%E5%BE%B9%E5%BA%95%E6%AF%94%E8%BC%83-ai%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%84%E3%83%BC%E3%83%AB%E3%81%AE%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%81%A8%E5%AE%9F%E8%A3%85)**
-
+[希望条件を登録する](https://radineer.asia/freelance/register?utm_source=zenn&utm_medium=article&utm_campaign=20260808-claude-codegithub-copilotcurso)

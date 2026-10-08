@@ -151,17 +151,7 @@ Claude Code、OpenClaw、AI経営OSの実践ノウハウを毎週公開中。
 
 ---
 
-Qiitaでコード付き解説も公開しています: https://qiita.com/sescore/items/8bafdfa611a93bb18986
+この記事は、フリーランス向け案件サイト「FreelanceDB」（合同会社Radineer）の運営者が書きました。
+コンサル・PMO領域の非公開案件を扱っており、希望条件を登録いただいた方に個別にご連絡しています。
 
----
-
-## 💼 フリーランスエンジニアの案件をお探しですか？
-
-**SES解体新書 フリーランスDB**では、高単価案件を多数掲載中です。
-
-- ✅ マージン率公開で透明な取引
-- ✅ AI/クラウド/Web系の厳選案件
-- ✅ 専任コーディネーターが単価交渉をサポート
-
-▶ **[無料でエンジニア登録する](https://radineer.asia/freelance/register?utm_source=zenn&utm_medium=article&utm_campaign=openclaw%E3%81%AE%E8%A8%98%E6%86%B6-claude-code%E3%81%AE%E5%AE%9F%E8%A1%8C%E3%81%A7%E9%96%8B%E7%99%BA%E3%82%92%E8%87%AA%E5%BE%8B%E5%8C%96%E3%81%99%E3%82%8B%E5%AE%9F%E8%B7%B5%E9%8C%B2)**
-
+[希望条件を登録する](https://radineer.asia/freelance/register?utm_source=zenn&utm_medium=article&utm_campaign=20261004-openclawclaude-code)

@@ -609,17 +609,7 @@ Arcの開発縮小に見られるように、Chromiumをフォークして独自
 
 ---
 
-Qiitaでコード付き解説も公開しています: https://qiita.com/sescore/items/a2aeb5058ad5f90c89f7
+この記事は、フリーランス向け案件サイト「FreelanceDB」（合同会社Radineer）の運営者が書きました。
+コンサル・PMO領域の非公開案件を扱っており、希望条件を登録いただいた方に個別にご連絡しています。
 
----
-
-## 💼 フリーランスエンジニアの案件をお探しですか？
-
-**SES解体新書 フリーランスDB**では、高単価案件を多数掲載中です。
-
-- ✅ マージン率公開で透明な取引
-- ✅ AI/クラウド/Web系の厳選案件
-- ✅ 専任コーディネーターが単価交渉をサポート
-
-▶ **[無料でエンジニア登録する](https://radineer.asia/freelance/register?utm_source=zenn&utm_medium=article&utm_campaign=2026%E5%B9%B4%E6%9C%80%E6%96%B0-%E9%96%8B%E7%99%BA%E7%94%9F%E7%94%A3%E6%80%A7%E3%83%84%E3%83%BC%E3%83%AB%E5%AE%8C%E5%85%A8%E6%AF%94%E8%BC%83-warp%E3%83%BBraycast%E3%83%BBlinear%E3%83%BBnotion%E3%81%AA%E3%81%A96%E9%81%B8%E3%81%AE%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%81%A8)**
-
+[希望条件を登録する](https://radineer.asia/freelance/register?utm_source=zenn&utm_medium=article&utm_campaign=20260725-2026warpraycastlinearnotion6)

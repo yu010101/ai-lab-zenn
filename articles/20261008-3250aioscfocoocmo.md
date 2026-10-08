@@ -126,11 +126,6 @@ Claude Code、OpenClaw、AI経営OSの実践ノウハウを毎週公開中。
 [noteメンバーシップに参加する →](https://note.com/l_mrk/membership)
 
 ---
-
-Qiitaでコード付き解説も公開しています: https://qiita.com/sescore/items/6a5d162146a68c69cc46
-
----
-
 この記事は、フリーランス向け案件サイト「FreelanceDB」（合同会社Radineer）の運営者が書きました。
 コンサル・PMO領域の非公開案件を扱っており、希望条件を登録いただいた方に個別にご連絡しています。
 
