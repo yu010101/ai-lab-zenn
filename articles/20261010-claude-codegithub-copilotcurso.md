@@ -3,7 +3,7 @@ title: "Claude Code・GitHub Copilot・Cursorのアーキテクチャ比較|エ�
 emoji: "🧑‍💻"
 type: "tech"
 topics: ["claudecode", "githubcopilot", "cursor", "mcp", "aiagent"]
-published: true
+published: false
 ---
 
 ## はじめに:なぜ今「アーキテクチャの違い」を理解する必要があるのか

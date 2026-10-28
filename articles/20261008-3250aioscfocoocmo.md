@@ -3,7 +3,7 @@ title: "3人・月商250万円の会社がAI経営OS(CFO/COO/CMO)を作った記
 emoji: "🧭"
 type: "idea"
 topics: ["ses", "freelance", "engineer", "ai", "claudecode"]
-published: true
+published: false
 ---
 
 ## 3人で月商250万円、管理コストだけが膨らんでいく会社だった

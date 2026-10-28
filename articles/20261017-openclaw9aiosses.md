@@ -3,7 +3,7 @@ title: "OpenClawで9体のAIエージェント経営OSを構築した実践記�
 emoji: "🧭"
 type: "idea"
 topics: ["aiagent", "生成ai", "ses", "freelance", "engineer"]
-published: true
+published: false
 ---
 
 ## はじめに：経営者が「全部見る」をやめた日

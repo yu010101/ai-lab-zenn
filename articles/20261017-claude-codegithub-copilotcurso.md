@@ -3,7 +3,7 @@ title: "【アーキテクチャ比較】Claude Code・GitHub Copilot・Cursor�
 emoji: "🧑‍💻"
 type: "tech"
 topics: ["claudecode", "githubcopilot", "cursor", "agent", "mcp"]
-published: true
+published: false
 ---
 
 ## はじめに
