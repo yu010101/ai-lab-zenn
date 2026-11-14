@@ -12,7 +12,7 @@ Qiita は即時公開なので同じ仕組みでも遅延なく出る。
 
 状態: .published-notified.json。通知に成功した id だけ記録する = 失敗分は次回リトライ。
 """
-import json, os, sys, urllib.parse, urllib.request, urllib.error
+import json, os, sys, time, urllib.parse, urllib.request, urllib.error
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 STATE_PATH = os.path.join(ROOT, ".published-notified.json")
@@ -150,6 +150,9 @@ def main():
             except (urllib.error.HTTPError, urllib.error.URLError, OSError) as e:
                 print(f"  送信 FAIL: {a['id']}: {e}", file=sys.stderr)
                 failed += 1            # 記録しない = 次回リトライ
+                if getattr(e, "code", None) == 429:
+                    break              # 上限に当たったらこの回は打ち切る（次の回に続きから）
+            time.sleep(1)              # 連続送信で 429 に当たらないように
         state[name] = sorted(done)
 
     if not dry:

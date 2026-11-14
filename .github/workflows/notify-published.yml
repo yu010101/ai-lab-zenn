@@ -27,6 +27,7 @@ jobs:
         run: python3 scripts/notify_published.py
 
       - name: 通知済みリストを保存
+        if: always()   # 送信の一部が失敗しても、成功した分は記録する（2026-11-14: 失敗で保存されず同じ記事を9/7から再送していた）
         run: |
           if git diff --quiet -- .published-notified.json; then
             echo "変更なし"; exit 0
